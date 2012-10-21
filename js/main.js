@@ -28,6 +28,8 @@ $(document).ready(function(){
 
 	var resultadoFinal = vectorDivEscalar( 2 , terminoAMasB );	
 
+	$('var#vcp').val(resultadoFinal).html(vectorAHTML(resultadoFinal));
+
 });
 
 // Obtiene el valor correspondiente a un atributo
@@ -42,6 +44,14 @@ function obtenerValor( unValor , valores ){
     }
 }
 
+// Devuelve un vector como un String
+function vectorAHTML( vector ){	
+	for (var i = 0; i < vector.length; i++) {
+		vector[i] = vector[i].toFixed(2);;
+	};
+	return "[" + vector.join(' , ') + "]";
+}
+
 // Devuelve el vector de valores para la dimensión a calcular
 function crearVectorValores( vector , valores ){
 	var vectorValores = [];
@@ -50,6 +60,8 @@ function crearVectorValores( vector , valores ){
 	};		
 	return vectorValores;
 }
+
+//
 
 // Calcula la sumatoria de un vector
 function sumariatoriaVector( vector ){
