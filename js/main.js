@@ -12,7 +12,8 @@ $(document).ready(function(){
 });
 
 function calculoViabilidad(){
-	// Dimensión Plausibilidad
+
+// Dimensión Plausibilidad
 
 	var vectorPPlausibilidad = P.slice( dimensiones.plausibilidad[0] , dimensiones.plausibilidad[1] + 1 );
 	
@@ -78,6 +79,30 @@ function calculoViabilidad(){
 	var resultadoFinal = vectorDivEscalar( 2 , terminoAMasB );	
 
 	$('var#vce').val(resultadoFinal).html(vectorAHTML(resultadoFinal));	
+
+// Dimensión Justificación
+	var vectorPJustificacion = P.slice( dimensiones.justificacion[0] , dimensiones.justificacion[1] + 1 );
+	console.debug( 'vectorPJustificacion', vectorPJustificacion );
+	
+	var vectorValoresJustificacion = tablaEj.slice( dimensiones.justificacion[0] , dimensiones.justificacion[1] + 1 );
+	console.debug( 'vectorValoresJustificacion 1', vectorValoresJustificacion);
+	vectorValoresJustificacion = crearVectorValoresJustificacion( vectorValoresJustificacion , valores );
+	console.debug( 'vectorValoresJustificacion 2', vectorValoresJustificacion);
+
+	var $tabla 		= $('table.tabla-justificacion');
+	var $peso 		= $tabla.find('td.peso');
+	var $valores 	= $tabla.find('td.valor');
+	var $pesoValor 	= $tabla.find('td.peso-valor');
+
+	$valores.each(function( ind ){		
+		$(this).html( '[ ' + vectorValoresJustificacion[ind].join(' , ') + ' ]' );
+	});
+
+	$valorPeso.each(function( ind ){		
+		$(this).html( '[ ' + vectorValoresJustificacion[ind].join(' , ') + ' ]' );
+	});
+
+
 }
 
 // Obtiene el valor correspondiente a un atributo
@@ -92,9 +117,22 @@ function obtenerValor( unValor , valores ){
     }
 }
 
+// Obtiene el valor correspondiente a un atributo para calcular Justificación
+// ej.1 mucho = [5.6,6.6,7.8,8.8]
+// ej.2 9 = [9]
+// devuelve un vector
+function obtenerValorJustificacion( unValor , valores ){
+    if( isNaN( unValor )){
+        return valores[unValor];
+    }else{
+        return [unValor];
+    }
+}
+
 // Devuelve un vector como un String
 function vectorAHTML( vector ){	
-	for (var i = 0; i < vector.length; i++) {
+	console.log(vector);
+	for (var i = 0; i < vector.length; i++) {		
 		vector[i] = vector[i].toFixed(2);;
 	};
 	return "[" + vector.join(' , ') + "]";
@@ -105,6 +143,15 @@ function crearVectorValores( vector , valores ){
 	var vectorValores = [];
 	for (var i = 0 ; i < vector.length; i++) {
 		vectorValores[i] = obtenerValor( vector[i] , valores );
+	};		
+	return vectorValores;
+}
+
+// Devuelve el vector de valores para la dimensión a calcular
+function crearVectorValoresJustificacion( vector , valores ){
+	var vectorValores = [];
+	for (var i = 0 ; i < vector.length; i++) {
+		vectorValores[i] = obtenerValorJustificacion( vector[i] , valores );
 	};		
 	return vectorValores;
 }
