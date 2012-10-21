@@ -7,9 +7,12 @@ $(document).ready(function(){
 		$(this).find('select option[value="'+tablaEj[i]+'"]').attr('selected',true);
 	});
 
-// 
+	calculoViabilidad();
 
-// Dimensión Plausibilidad [0]
+});
+
+function calculoViabilidad(){
+	// Dimensión Plausibilidad
 
 	var vectorPPlausibilidad = P.slice( dimensiones.plausibilidad[0] , dimensiones.plausibilidad[1] + 1 );
 	
@@ -30,7 +33,52 @@ $(document).ready(function(){
 
 	$('var#vcp').val(resultadoFinal).html(vectorAHTML(resultadoFinal));
 
-});
+// Dimensión Adecuacion
+
+	var vectorPAdecuacion = P.slice( dimensiones.adecuacion[0] , dimensiones.adecuacion[1] + 1 );
+	console.debug( 'vectorPAdecuacion', vectorPAdecuacion);
+	var vectorValoresAdecuacion = tablaEj.slice( dimensiones.adecuacion[0] , dimensiones.adecuacion[1] + 1 );
+	console.debug( 'vectorValoresAdecuacion 1', vectorValoresAdecuacion);
+	vectorValoresAdecuacion = crearVectorValores( vectorValoresAdecuacion , valores );
+	console.debug( 'vectorValoresAdecuacion 2', vectorValoresAdecuacion);
+
+	var sumatoriaP = sumariatoriaVector( vectorPAdecuacion );
+
+	var sumatoriaPDivValores = sumatoriaPDivV( vectorPAdecuacion , vectorValoresAdecuacion );
+	var sumatoriaPPorValores = sumatoriaPPorV( vectorPAdecuacion , vectorValoresAdecuacion );
+
+	var terminoA = escalarDivVectorMulti( sumatoriaP , sumatoriaPDivValores );
+	var terminoB = vectorDivEscalar( sumatoriaP , sumatoriaPPorValores );
+	
+	var terminoAMasB = sumatoriaVectores( terminoA , terminoB );
+
+	var resultadoFinal = vectorDivEscalar( 2 , terminoAMasB );	
+
+	$('var#vca').val(resultadoFinal).html(vectorAHTML(resultadoFinal));
+
+// Dimensión Éxito
+
+	var vectorPExito = P.slice( dimensiones.exito[0] , dimensiones.exito[1] + 1 );
+	console.debug( 'vectorPExito', vectorPExito);
+	var vectorValoresExito = tablaEj.slice( dimensiones.exito[0] , dimensiones.exito[1] + 1 );
+	console.debug( 'vectorValoresExito 1', vectorValoresExito);
+	vectorValoresExito = crearVectorValores( vectorValoresExito , valores );
+	console.debug( 'vectorValoresExito 2', vectorValoresExito);
+
+	var sumatoriaP = sumariatoriaVector( vectorPExito );
+
+	var sumatoriaPDivValores = sumatoriaPDivV( vectorPExito , vectorValoresExito );
+	var sumatoriaPPorValores = sumatoriaPPorV( vectorPExito , vectorValoresExito );
+
+	var terminoA = escalarDivVectorMulti( sumatoriaP , sumatoriaPDivValores );
+	var terminoB = vectorDivEscalar( sumatoriaP , sumatoriaPPorValores );
+	
+	var terminoAMasB = sumatoriaVectores( terminoA , terminoB );
+
+	var resultadoFinal = vectorDivEscalar( 2 , terminoAMasB );	
+
+	$('var#vce').val(resultadoFinal).html(vectorAHTML(resultadoFinal));	
+}
 
 // Obtiene el valor correspondiente a un atributo
 // ej.1 mucho = [5.6,6.6,7.8,8.8]

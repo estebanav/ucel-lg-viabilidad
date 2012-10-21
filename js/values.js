@@ -11,7 +11,7 @@ var valores ={
 var dimensiones = {
     plausibilidad: [0,4],
     justificacion : [5,7],
-    adecuacion : [8,23],
+    adecuacion : [12,26],
     exito : [24,49]
 };
 
