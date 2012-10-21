@@ -1,9 +1,13 @@
 $(document).ready(function(){
 
-	$('td.valor').each(function(){
+// Carga todos los listboxes para los valores
+	$('td.valor').each(function( i ){
 		var tipo = $(this).attr('data-tipo');
 		$(this).html( $('script#' + tipo).html() );
+		$(this).find('select option[value="'+tablaEj[i]+'"]').attr('selected',true);
 	});
+
+// 
 
 // Dimensión Plausibilidad [0]
 
