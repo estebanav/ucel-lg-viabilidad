@@ -30,9 +30,9 @@ function calculoViabilidad(){
 	
 	var terminoAMasB = sumatoriaVectores( terminoA , terminoB );
 
-	var resultadoFinal = vectorDivEscalar( 2 , terminoAMasB );	
+	var resultadoFinalPlausibilidad = vectorDivEscalar( 2 , terminoAMasB );	
 
-	$('var#vcp').val(resultadoFinal).html(vectorAHTML(resultadoFinal));
+	$('var#vcp').val(resultadoFinalPlausibilidad).html(vectorAHTML(resultadoFinalPlausibilidad));
 
 // Dimensión Adecuacion
 
@@ -53,9 +53,9 @@ function calculoViabilidad(){
 	
 	var terminoAMasB = sumatoriaVectores( terminoA , terminoB );
 
-	var resultadoFinal = vectorDivEscalar( 2 , terminoAMasB );	
+	var resultadoFinalAdecuacion = vectorDivEscalar( 2 , terminoAMasB );	
 
-	$('var#vca').val(resultadoFinal).html(vectorAHTML(resultadoFinal));
+	$('var#vca').val( resultadoFinalAdecuacion ).html(vectorAHTML( resultadoFinalAdecuacion ));
 
 // Dimensión Éxito
 
@@ -76,9 +76,9 @@ function calculoViabilidad(){
 	
 	var terminoAMasB = sumatoriaVectores( terminoA , terminoB );
 
-	var resultadoFinal = vectorDivEscalar( 2 , terminoAMasB );	
+	var resultadoFinalExito = vectorDivEscalar( 2 , terminoAMasB );	
 
-	$('var#vce').val(resultadoFinal).html(vectorAHTML(resultadoFinal));	
+	$('var#vce').val(resultadoFinalExito).html(vectorAHTML(resultadoFinalExito));	
 
 // Dimensión Justificación
 	var vectorPJustificacion = P.slice( dimensiones.justificacion[0] , dimensiones.justificacion[1] + 1 );
@@ -93,16 +93,43 @@ function calculoViabilidad(){
 	var $peso 		= $tabla.find('td.peso');
 	var $valores 	= $tabla.find('td.valor');
 	var $pesoValor 	= $tabla.find('td.peso-valor');
+	var $aproximacion = $tabla.find('td.aprox-num');
+	var aproxNum = [];
 
 	$valores.each(function( ind ){		
-		$(this).html( '[ ' + vectorValoresJustificacion[ind].join(' , ') + ' ]' );
+		$(this).html( '[ ' + vectorValoresJustificacion[ind].join(' , ') + ' ]' );		
+		var peso = parseFloat( $($peso[ind]).html() );
+		var pesoXValor = escalarPorVectorMulti( peso , vectorValoresJustificacion[ind] );
+		var suma = 0;
+		for (var i = 0; i < pesoXValor.length; i++) {
+			pesoXValor[i] = pesoXValor[i].toFixed(2);
+			suma += parseFloat( pesoXValor[i] );
+		};		
+		aproxNum[ind] = (suma / pesoXValor.length).toFixed(2);
+		$($pesoValor[ind]).html( '[ ' + pesoXValor.join(' , ') + ' ]' );
+		$($aproximacion[ind]).html( aproxNum[ind] );
 	});
 
-	$valorPeso.each(function( ind ){		
-		$(this).html( '[ ' + vectorValoresJustificacion[ind].join(' , ') + ' ]' );
-	});
+	var max 	= aproxNum[0];
+	var maxInd 	= 0;
+	for (var i = 0; i < aproxNum.length; i++) {
+		if( aproxNum[i] > max ){
+			max = aproxNum[i];
+			maxInd = i;
+		}
+	};
 
+	$('var#max').html(maxInd+1);
+	var resultadoFinalJustificacion = vectorValoresJustificacion[ maxInd ];
+	$('var#vcj').val(vectorValoresJustificacion[ maxInd ]).html(vectorAHTML(vectorValoresJustificacion[ maxInd ]));	
 
+// Viabilidad Final
+	
+	var sumPFinal = sumariatoriaVector( PFinal );
+	var vFinal = [ resultadoFinalPlausibilidad , resultadoFinalJustificacion , resultadoFinalAdecuacion , resultadoFinalExito ];
+	var pFPorVF = sumatoriaPPorV( [sumPFinal] , vFinal );
+	var resultadoViabilidadFinal = vectorDivEscalar( sumPFinal , pFPorVF );
+	$('var#vf').val(resultadoViabilidadFinal).html(vectorAHTML(resultadoViabilidadFinal));	
 }
 
 // Obtiene el valor correspondiente a un atributo
@@ -133,7 +160,7 @@ function obtenerValorJustificacion( unValor , valores ){
 function vectorAHTML( vector ){	
 	console.log(vector);
 	for (var i = 0; i < vector.length; i++) {		
-		vector[i] = vector[i].toFixed(2);;
+		vector[i] = vector[i].toFixed(2);
 	};
 	return "[" + vector.join(' , ') + "]";
 }
