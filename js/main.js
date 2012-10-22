@@ -9,6 +9,21 @@ $(document).ready(function(){
 
 	calculoViabilidad();
 
+	$('input#actualizar').on('click',function(e){
+		e.preventDefault();
+		var $valores = [];
+		$('table.viabilidad td.valor').each(function(ind){
+			var $select = $(this).find('select.valor-atributo');
+			var valor = $select.val();
+			if( $(this).attr('data-tipo') == 'numerica' ){
+				valor = parseInt( valor );
+			}
+			$valores[ind] = valor;
+		});
+		tablaEj = $valores;
+		calculoViabilidad();		
+	});
+
 });
 
 function calculoViabilidad(){
