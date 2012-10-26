@@ -145,8 +145,23 @@ function calculoViabilidad(){
 	var pFPorVF = sumatoriaPPorV( [sumPFinal] , vFinal );
 	var resultadoViabilidadFinal = vectorDivEscalar( sumPFinal , pFPorVF );
 	$('var#vf').val(resultadoViabilidadFinal).html(vectorAHTML(resultadoViabilidadFinal));	
+
+	console.log('plausibilidad',resultadoFinalPlausibilidad);
+	console.log('adecuacion',resultadoFinalAdecuacion);
+	console.log('exito',resultadoFinalExito);
+	console.log('justificacion',resultadoFinalJustificacion);
+	console.log('final',resultadoViabilidadFinal);
+	$.jqplot('chartdiv',  [[[8.02,0] , [8.49,1] , [8.99,1] , [9.37,0]]]);
 }
 
+// genera la matriz para la gráfica 
+
+function generaMatriz( unVector ){
+	for (var i = 0; i < unVector.length; i++) {
+		unVector[i]
+	};
+
+}
 // Obtiene el valor correspondiente a un atributo
 // ej.1 mucho = [5.6,6.6,7.8,8.8]
 // ej.2 9 = [9,9,9,9]
