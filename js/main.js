@@ -146,20 +146,29 @@ function calculoViabilidad(){
 	var resultadoViabilidadFinal = vectorDivEscalar( sumPFinal , pFPorVF );
 	$('var#vf').val(resultadoViabilidadFinal).html(vectorAHTML(resultadoViabilidadFinal));	
 
+	var matrizGrafico = new Array(5);
 	console.log('plausibilidad',resultadoFinalPlausibilidad);
+	matrizGrafico[0] = generaMatriz( resultadoFinalPlausibilidad );
 	console.log('adecuacion',resultadoFinalAdecuacion);
+	matrizGrafico[1] = generaMatriz( resultadoFinalAdecuacion );
 	console.log('exito',resultadoFinalExito);
+	matrizGrafico[2]  = generaMatriz( resultadoFinalExito );
 	console.log('justificacion',resultadoFinalJustificacion);
+	matrizGrafico[3]  = generaMatriz( resultadoFinalJustificacion );
 	console.log('final',resultadoViabilidadFinal);
-	$.jqplot('chartdiv',  [[[8.02,0] , [8.49,1] , [8.99,1] , [9.37,0]]]);
+	matrizGrafico[4]  = generaMatriz( resultadoViabilidadFinal );
+	console.log(matrizGrafico);
+	$.jqplot('chartdiv',  matrizGrafico );
 }
 
 // genera la matriz para la gráfica 
 
 function generaMatriz( unVector ){
+	var elem = [0,1,1,0];
 	for (var i = 0; i < unVector.length; i++) {
-		unVector[i]
+		unVector[i] = [parseFloat(unVector[i]),elem[i]]
 	};
+	return unVector;
 
 }
 // Obtiene el valor correspondiente a un atributo
