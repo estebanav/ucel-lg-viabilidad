@@ -73,7 +73,7 @@ function calculoViabilidad(){
 	$('var#vca').val( resultadoFinalAdecuacion ).html(vectorAHTML( resultadoFinalAdecuacion ));
 
 // Dimensión Éxito
-
+	console.log('Calcular Exito');
 	var vectorPExito = P.slice( dimensiones.exito[0] , dimensiones.exito[1] + 1 );
 	console.debug( 'vectorPExito', vectorPExito);
 	var vectorValoresExito = tablaEj.slice( dimensiones.exito[0] , dimensiones.exito[1] + 1 );
@@ -92,7 +92,7 @@ function calculoViabilidad(){
 	var terminoAMasB = sumatoriaVectores( terminoA , terminoB );
 
 	var resultadoFinalExito = vectorDivEscalar( 2 , terminoAMasB );	
-
+console.log('FIN Calcular Exito');
 	$('var#vce').val(resultadoFinalExito).html(vectorAHTML(resultadoFinalExito));	
 
 // Dimensión Justificación
@@ -165,10 +165,11 @@ function calculoViabilidad(){
 
 function generaMatriz( unVector ){
 	var elem = [0,1,1,0];
+	var vectorTmp = [];
 	for (var i = 0; i < unVector.length; i++) {
-		unVector[i] = [parseFloat(unVector[i]),elem[i]]
+		vectorTmp[i] = [parseFloat(unVector[i]),elem[i]]
 	};
-	return unVector;
+	return vectorTmp;
 
 }
 // Obtiene el valor correspondiente a un atributo
@@ -188,9 +189,14 @@ function obtenerValor( unValor , valores ){
 // ej.2 9 = [9]
 // devuelve un vector
 function obtenerValorJustificacion( unValor , valores ){
+
     if( isNaN( unValor )){
+        
+    		console.log(valores[unValor],'unvalor',unValor);
+    	
         return valores[unValor];
     }else{
+    	
         return [unValor];
     }
 }
@@ -198,10 +204,11 @@ function obtenerValorJustificacion( unValor , valores ){
 // Devuelve un vector como un String
 function vectorAHTML( vector ){	
 	console.log(vector);
+	var vectorTmp = [];
 	for (var i = 0; i < vector.length; i++) {		
-		vector[i] = vector[i].toFixed(2);
+		vectorTmp[i] = vector[i].toFixed(2);
 	};
-	return "[" + vector.join(' , ') + "]";
+	return "[" + vectorTmp.join(' , ') + "]";
 }
 
 // Devuelve el vector de valores para la dimensión a calcular
@@ -268,6 +275,7 @@ function sumatoriaPDivV( p , v ) {
 	var sumatoria = [0,0,0,0];
 	for (var i = 0 ; i < p.length ; i++ ) {
 		var resultado = escalarDivVectorMulti( p[i] , v[i] );
+		console.log(resultado,'resultado');
 		for( var j = 0 ; j < resultado.length ; j++ ){
 			sumatoria[j] += resultado[j];
 		}
