@@ -1,4 +1,8 @@
+
+
 $(document).ready(function(){
+	
+	
 
 // Carga todos los listboxes para los valores
 	$('td.valor').each(function( i ){
@@ -21,10 +25,21 @@ $(document).ready(function(){
 			$valores[ind] = valor;
 		});
 		tablaEj = $valores;
-		calculoViabilidad();		
+		calculoViabilidad();			
 	});
 
 });
+
+function drawChart( data ) {
+    var data = google.visualization.arrayToDataTable(data);
+
+    var options = {
+      title: 'Test Viabilidad'
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('chartdiv'));
+    chart.draw(data, options);
+}
 
 function calculoViabilidad(){
 
@@ -148,17 +163,17 @@ console.log('FIN Calcular Exito');
 
 	var matrizGrafico = new Array(5);
 	console.log('plausibilidad',resultadoFinalPlausibilidad);
-	matrizGrafico[0] = generaMatriz( resultadoFinalPlausibilidad );
+	matrizGrafico[0] = { label: 'resultadoFinalPlausibilidad' , data: generaMatriz( resultadoFinalPlausibilidad ) };
 	console.log('adecuacion',resultadoFinalAdecuacion);
-	matrizGrafico[1] = generaMatriz( resultadoFinalAdecuacion );
+	matrizGrafico[1] = { label: 'resultadoFinalAdecuacion' , data: generaMatriz( resultadoFinalAdecuacion ) };
 	console.log('exito',resultadoFinalExito);
-	matrizGrafico[2]  = generaMatriz( resultadoFinalExito );
+	matrizGrafico[2]  = { label: 'resultadoFinalExito' , data: generaMatriz( resultadoFinalExito ) };
 	console.log('justificacion',resultadoFinalJustificacion);
-	matrizGrafico[3]  = generaMatriz( resultadoFinalJustificacion );
+	matrizGrafico[3]  = { label: 'resultadoFinalJustificacion' , data: generaMatriz( resultadoFinalJustificacion ) };
 	console.log('final',resultadoViabilidadFinal);
-	matrizGrafico[4]  = generaMatriz( resultadoViabilidadFinal );
+	matrizGrafico[4]  = { label: 'resultadoViabilidadFinal' , data: generaMatriz( resultadoViabilidadFinal ) };
 	console.log(matrizGrafico);
-	$.jqplot('chartdiv',  matrizGrafico );
+	
 }
 
 // genera la matriz para la gráfica 

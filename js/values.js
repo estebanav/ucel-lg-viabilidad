@@ -5,7 +5,7 @@ var valores ={
     poco : [1.2,2.2,3.4,4.4],
     regular : [3.4,4.4,5.6,6.6],
     mucho : [5.6,6.6,7.8,8.8],
-    todo: [7.8,8.8,10,10]
+    todo: [7.8 , 8.8, 10 , 10]
 };
 
 var dimensiones = {
